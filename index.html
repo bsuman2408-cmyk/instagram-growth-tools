@@ -1,1 +1,321 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Instagram 10K Growth Planner</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{
+
+  margin:0;padding:20px;
+
+  background:#11111c;color:#fff;
+
+  font-family:Arial,sans-serif;
+
+}
+
+h1{color:#ff719b}
+
+.card{
+
+  background:#222237;padding:18px;
+
+  border-radius:15px;margin:16px 0;
+
+}
+
+input,textarea,button{
+
+  width:100%;padding:13px;margin:8px 0;
+
+  border:0;border-radius:9px;font-size:16px;
+
+}
+
+input,textarea{background:#38384f;color:white}
+
+button{
+
+  background:#ff719b;color:#17121a;
+
+  font-weight:bold;cursor:pointer;
+
+}
+
+.big{font-size:32px;color:#ff719b;font-weight:bold}
+
+.track{
+
+  height:13px;background:#44445b;
+
+  border-radius:20px;overflow:hidden;
+
+}
+
+.bar{height:100%;width:0;background:#ff719b}
+
+.idea{
+
+  background:#38384f;padding:11px;
+
+  border-radius:9px;margin:8px 0;
+
+}
+
+.muted{color:#c5c5d5;font-size:13px}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🚀 Instagram 10K Growth Planner</h1>
+
+<p class="muted">Grow your genuine audience with better content.</p>
+
+<div class="card">
+
+<h2>🎯 Follower Goal</h2>
+
+<div class="big" id="display">0</div>
+
+<p>Target: 10,000 followers</p>
+
+<div class="track">
+
+<div class="bar" id="bar"></div>
+
+</div>
+
+<p id="percentage">0% complete</p>
+
+<input id="followers" type="number" min="0"
+
+placeholder="Enter current followers">
+
+<button onclick="saveFollowers()">Save Followers</button>
+
+</div>
+
+<div class="card">
+
+<h2>💷 Advertising Budget</h2>
+
+<p class="muted">Plan your promotion spending.</p>
+
+<label>Budget (£)</label>
+
+<input id="budget" type="number" min="0" max="10" value="5">
+
+<label>Amount spent (£)</label>
+
+<input id="spent" type="number" min="0" max="10" value="0">
+
+<label>People reached</label>
+
+<input id="reach" type="number" min="0" placeholder="Enter reach">
+
+<label>New genuine followers</label>
+
+<input id="gained" type="number" min="0" placeholder="Enter followers gained">
+
+<button onclick="calculate()">Calculate Results</button>
+
+<p id="results">Your results will appear here.</p>
+
+</div>
+
+<div class="card">
+
+<h2>🎬 Reel Content Ideas</h2>
+
+<div id="ideas">
+
+<div class="idea">Introduce yourself and your interests.</div>
+
+<div class="idea">Share a behind-the-scenes video.</div>
+
+<div class="idea">Teach a useful tip.</div>
+
+<div class="idea">Answer a common question.</div>
+
+<div class="idea">Share a short personal story.</div>
+
+</div>
+
+<button onclick="newIdea()">Get Another Idea</button>
+
+</div>
+
+<div class="card">
+
+<h2>✍️ Caption Generator</h2>
+
+<input id="topic" placeholder="Enter your post topic">
+
+<button onclick="caption()">Generate Caption</button>
+
+<p id="captionResult"></p>
+
+</div>
+
+<div class="card">
+
+<h2>📊 Weekly Notes</h2>
+
+<textarea id="notes" rows="4"
+
+placeholder="Write what worked well this week..."></textarea>
+
+<button onclick="saveNotes()">Save Notes</button>
+
+<p id="noteMessage"></p>
+
+</div>
+
+<p class="muted">
+
+This is a manual planning tool. It does not connect to Instagram,
+
+buy followers, automate account activity or process payments.
+
+</p>
+
+<script>
+
+function saveFollowers(){
+
+ const n=Number(document.getElementById("followers").value);
+
+ if(!Number.isInteger(n)||n<0){
+
+  alert("Enter a valid follower count");return;
+
+ }
+
+ localStorage.setItem("followers",n);
+
+ updateDisplay();
+
+}
+
+function updateDisplay(){
+
+ const n=Number(localStorage.getItem("followers")||0);
+
+ const p=Math.min(n/10000*100,100);
+
+ document.getElementById("display").textContent=n.toLocaleString();
+
+ document.getElementById("followers").value=n;
+
+ document.getElementById("bar").style.width=p+"%";
+
+ document.getElementById("percentage").textContent=p.toFixed(1)+"% complete";
+
+}
+
+function calculate(){
+
+ const budget=Number(document.getElementById("budget").value);
+
+ const spent=Number(document.getElementById("spent").value);
+
+ const reach=Number(document.getElementById("reach").value);
+
+ const gained=Number(document.getElementById("gained").value);
+
+ if(![budget,spent,reach,gained].every(Number.isFinite)||
+
+ budget<0||budget>10||spent<0||spent>budget||reach<0||gained<0){
+
+  alert("Check your numbers and budget");return;
+
+ }
+
+ let result="Budget remaining: £"+(budget-spent).toFixed(2);
+
+ result+=" | Reach: "+reach.toLocaleString();
+
+ if(gained>0&&spent>0){
+
+  result+=" | Cost per follower: £"+(spent/gained).toFixed(2);
+
+ }
+
+ document.getElementById("results").textContent=result;
+
+}
+
+const ideas=[
+
+"Share three things people don't know about you.",
+
+"Show how you create something.",
+
+"Answer a question from your audience.",
+
+"Share a useful tip in your niche.",
+
+"Make a short introduction Reel.",
+
+"Tell an interesting story.",
+
+"Show a behind-the-scenes moment."
+
+];
+
+function newIdea(){
+
+ const item=document.createElement("div");
+
+ item.className="idea";
+
+ item.textContent=ideas[Math.floor(Math.random()*ideas.length)];
+
+ document.getElementById("ideas").prepend(item);
+
+}
+
+function caption(){
+
+ const topic=document.getElementById("topic").value.trim();
+
+ if(!topic){alert("Enter a topic first");return;}
+
+ document.getElementById("captionResult").textContent=
+
+ topic+" ✨ What do you think? Share your thoughts below!";
+
+}
+
+function saveNotes(){
+
+ localStorage.setItem("notes",document.getElementById("notes").value);
+
+ document.getElementById("noteMessage").textContent="Notes saved!";
+
+}
+
+document.getElementById("notes").value=
+
+localStorage.getItem("notes")||"";
+
+updateDisplay();
+
+</script>
+
+</body>
+
+</html>
